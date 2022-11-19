@@ -1,0 +1,16 @@
+image:
+  file: .gitpod.Dockerfile
+tasks:
+  - command: mkdir -p /workspace/data && mongod --dbpath /workspace/data
+  - init: |
+      cp secret.example.yaml secret.yaml
+      chmod +x ./start_mongodb.sh
+      ./start_mongodb.sh latest "" 27019 testfish Mike fishtest 
+      yarn
+
+ports:
+  # response of root request will be appeared in the browser
+  - port: 3000
+    name: root response
+    onOpen: open-browser
+    visibility: public
