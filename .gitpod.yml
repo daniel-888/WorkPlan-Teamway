@@ -5,7 +5,7 @@ tasks:
   - init: |
       cp secret.example.yaml secret.yaml
       chmod +x ./start-mongodb.sh
-      ./start-mongodb.sh latest "" 27019 teamway Mike workplan
+      ./start-mongodb.sh latest "" 27019 workplan Mike teamway
       yarn
 
 ports:
