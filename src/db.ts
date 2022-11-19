@@ -2,9 +2,7 @@ import mongoose from "mongoose";
 
 const options = {
   useNewUrlParser: true,
-  reconnectTries: Number.MAX_VALUE,
-  reconnectInterval: 500,
-  connectTimeoutMS: 10000,
+  // connectTimeoutMS: 10000,
 };
 
 const initDB = async (): Promise<void> => {
@@ -18,9 +16,10 @@ const initDB = async (): Promise<void> => {
 
   const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 
+  console.log(url)
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(url, options)
+      .connect(url)
       .then(() => {
         console.log("MongoDB is connected");
         resolve();
