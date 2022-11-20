@@ -20,6 +20,23 @@ const workersList = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
+const getInactiveWorkers = (req: Request, res: Response, next: NextFunction) => {
+  WorkerQuery.find({ isWorkerActive: false })
+    .sort({ createDate: -1 })
+    .then((workers: IWorkerQuery[]) => {
+      res.json(workers.map((worker: IWorkerQuery) => {
+        return {
+          id: worker._id,
+          firstName: worker.firstName,
+          lastName: worker.lastName,
+          createDate: worker.createDate,
+          isWorkerActive: worker.isWorkerActive,
+        }
+      }));
+    })
+    .catch(next);
+};
+
 const getWorker = (req: Request, res: Response, next: NextFunction) => {
   console.log("req.params = ", req.params);
   if (!Types.ObjectId.isValid(req.params.workerId))
@@ -104,7 +121,7 @@ const deleteWorker = (req: Request, res: Response, next: NextFunction) => {
   if (!Types.ObjectId.isValid(workerId))
     res.status(404).json({ message: "Worker id is not valid." });
   else
-    WorkerQuery.findByIdAndUpdate(new Types.ObjectId(workerId), {isWorkerActive: false}).then((worker: IWorkerQuery) => {
+    WorkerQuery.findOneAndUpdate({_id: new Types.ObjectId(workerId), isWorkerActive: true}, {isWorkerActive: false}).then((worker: IWorkerQuery) => {
       if (worker === null)
         res.status(404).json({ message: "Worker is not found" });
       else
@@ -119,4 +136,5 @@ export {
   getWorker,
   updateWorker,
   deleteWorker,
+  getInactiveWorkers,
 };

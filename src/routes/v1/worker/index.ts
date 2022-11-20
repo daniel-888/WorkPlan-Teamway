@@ -7,6 +7,7 @@ import {
   getWorker,
   updateWorker,
   deleteWorker,
+  getInactiveWorkers,
 } from "../../../controllers/worker.controller";
 
 const router: Router = Router();
@@ -14,8 +15,12 @@ const router: Router = Router();
 router.get('/', workersList);
 router.post("/", createWorker);
 router.delete("/", deleteAllWorkers);
+
+router.get("/inActive", getInactiveWorkers);
+
 router.get("/:workerId", getWorker);
 router.patch("/:workerId", updateWorker);
 router.delete("/:workerId", deleteWorker);
+
 
 export default router;
