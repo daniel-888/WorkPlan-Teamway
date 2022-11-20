@@ -10,10 +10,24 @@ import initDB from "./db";
 import initRoute from "./routes";
 import setEnviornment from "./env";
 
+// Swagger OpenAPI definition file
+const swaggerDocument = require("./swagger/swagger.json");
+const customCss = fs.readFileSync(
+  process.cwd() + "/src/swagger/swagger.css",
+  "utf8"
+);
+
 setEnviornment();
 initDB();
 
 const app: Express = express();
+
+// swagger - ui client
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, { customCss })
+);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -22,6 +36,7 @@ app.use(
     extended: false,
   })
 );
+
 
 app.use(morgan("dev"));
 initRoute(app);

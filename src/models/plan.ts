@@ -1,6 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 
 export interface IPlanQuery extends Document {
+  _id: Schema.Types.ObjectId,
   date: Date,
   work_id: Schema.Types.ObjectId,
   shift_id: Schema.Types.ObjectId,

@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 
 const options = {
   useNewUrlParser: true,
-  // connectTimeoutMS: 10000,
+  reconnectTries: Number.MAX_VALUE,
+  reconnectInterval: 500,
+  connectTimeoutMS: 10000,
 };
 
 const initDB = async (): Promise<void> => {
