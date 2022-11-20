@@ -4,7 +4,7 @@ tasks:
   - command: mkdir -p /workspace/data && mongod --dbpath /workspace/data
   - init: |
       chmod +x ./start-mongodb.sh
-      ./start-mongodb.sh latest "" 27017 workplan Mike teamway
+      ./start-mongodb.sh latest "" 27019 workplan Mike teamway
       yarn
 
 ports:
