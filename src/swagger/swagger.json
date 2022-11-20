@@ -94,7 +94,7 @@
         "description": "make a worker inactive"
       }
     },
-    "/v1/woker/{workerId}": {
+    "/v1/worker/{workerId}": {
       "parameters": [
         {
           "schema": {
@@ -183,39 +183,6 @@
           }
         },
         "description": "Make worker inactive"
-      }
-    },
-    "/v1/worker/{isWorkerActive}": {
-      "parameters": [
-        {
-          "schema": {
-            "type": "boolean"
-          },
-          "name": "isWorkerActive",
-          "in": "path",
-          "required": true,
-          "description": "active or inactive workers"
-        }
-      ],
-      "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Worker"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "operationId": "get-v1-worker-isWorkerActive"
       }
     },
     "/v1/shift": {

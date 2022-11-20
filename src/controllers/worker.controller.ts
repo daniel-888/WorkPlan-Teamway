@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import WorkerQuery, { IWorkerQuery } from "../models/worker";
+import { Types } from "mongoose";
 import { formatDate } from "../utils/date";
 
 const workersList = (req: Request, res: Response, next: NextFunction) => {
@@ -21,21 +22,25 @@ const workersList = (req: Request, res: Response, next: NextFunction) => {
 
 const getWorker = (req: Request, res: Response, next: NextFunction) => {
   console.log("req.params = ", req.params);
-  WorkerQuery.findOne({ _id: req.params.workerId, isWorkerActive: true })
-    .sort({ createDate: -1 })
-    .then((worker: IWorkerQuery) => {
-      if (worker === null)
-        res.status(404).json({ message: "Worker not found." });
-      else
-        res.json({
-          id: worker._id,
-          firstName: worker.firstName,
-          lastName: worker.lastName,
-          createDate: worker.createDate,
-          isWorkerActive: worker.isWorkerActive,
-        })
-    })
-    .catch(next);
+  if (!Types.ObjectId.isValid(req.params.workerId))
+    res.status(404).json({ message: "Worker id is not valid." });
+  else
+    WorkerQuery.findOne({ _id: new Types.ObjectId(req.params.workerId), isWorkerActive: true })
+      .sort({ createDate: -1 })
+      .then((worker: IWorkerQuery) => {
+        if (worker === null)
+          res.status(404).json({ message: "Worker not found." });
+        else
+          res.json({
+            id: worker._id,
+            firstName: worker.firstName,
+            lastName: worker.lastName,
+            email: worker.email,
+            createDate: worker.createDate,
+            isWorkerActive: worker.isWorkerActive,
+          })
+      })
+      .catch(next);
 };
 
 const createWorker = (req: Request, res: Response, next: NextFunction) => {
@@ -62,6 +67,30 @@ const createWorker = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 }
 
+const updateWorker = (req: Request, res: Response, next: NextFunction) => {
+  let { workerId } = req.params;
+  let { firstName, lastName, email } = req.body;
+  if (!Types.ObjectId.isValid(workerId))
+    res.status(404).json({ message: "Worker id is not valid." });
+  else
+    WorkerQuery
+      .findOneAndUpdate({ _id: new Types.ObjectId(workerId) }, { firstName, lastName, email })
+      .then((worker: IWorkerQuery) => {
+        if (worker === null)
+          res.status(404).json({ message: "Worker is not found" });
+        else
+          res.json({
+            id: worker._id,
+            firstName,
+            lastName,
+            email,
+            createDate: worker.createDate,
+            isWorkerActive: worker.isWorkerActive,
+          })
+      })
+      .catch(next);
+}
+
 const deleteAllWorkers = (req: Request, res: Response, next: NextFunction) => {
   WorkerQuery
     .updateMany({ isWorkerActive: true }, { isWorkerActive: false })
@@ -70,11 +99,24 @@ const deleteAllWorkers = (req: Request, res: Response, next: NextFunction) => {
     })
 }
 
+const deleteWorker = (req: Request, res: Response, next: NextFunction) => {
+  let { workerId } = req.params;
+  if (!Types.ObjectId.isValid(workerId))
+    res.status(404).json({ message: "Worker id is not valid." });
+  else
+    WorkerQuery.findByIdAndUpdate(new Types.ObjectId(workerId), {isWorkerActive: false}).then((worker: IWorkerQuery) => {
+      if (worker === null)
+        res.status(404).json({ message: "Worker is not found" });
+      else
+        res.json({ message: "Seccussfully deleted worker." });
+    })
+}
+
 export {
   workersList,
   createWorker,
   deleteAllWorkers,
   getWorker,
-  // updateWorker,
-  // deleteWorker
+  updateWorker,
+  deleteWorker,
 };
