@@ -18,7 +18,6 @@ const initDB = async (): Promise<void> => {
 
   const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 
-  console.log(url)
   return new Promise((resolve, reject) => {
     mongoose
       .connect(url)

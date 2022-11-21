@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import WorkerQuery, { IWorkerQuery } from "../models/worker";
 import { Types } from "mongoose";
-import { formatDate } from "../utils/date";
 
 const workersList = (req: Request, res: Response, next: NextFunction) => {
   WorkerQuery.find({ isWorkerActive: true })
@@ -12,6 +11,7 @@ const workersList = (req: Request, res: Response, next: NextFunction) => {
           id: worker._id,
           firstName: worker.firstName,
           lastName: worker.lastName,
+          email: worker.email,
           createDate: worker.createDate,
           isWorkerActive: worker.isWorkerActive,
         }
@@ -29,6 +29,7 @@ const getInactiveWorkers = (req: Request, res: Response, next: NextFunction) => 
           id: worker._id,
           firstName: worker.firstName,
           lastName: worker.lastName,
+          email: worker.email,
           createDate: worker.createDate,
           isWorkerActive: worker.isWorkerActive,
         }
@@ -114,6 +115,7 @@ const deleteAllWorkers = (req: Request, res: Response, next: NextFunction) => {
     .then(() => {
       res.json("Deleted all workers");
     })
+    .catch(next);
 }
 
 const deleteWorker = (req: Request, res: Response, next: NextFunction) => {
@@ -121,12 +123,18 @@ const deleteWorker = (req: Request, res: Response, next: NextFunction) => {
   if (!Types.ObjectId.isValid(workerId))
     res.status(404).json({ message: "Worker id is not valid." });
   else
-    WorkerQuery.findOneAndUpdate({_id: new Types.ObjectId(workerId), isWorkerActive: true}, {isWorkerActive: false}).then((worker: IWorkerQuery) => {
-      if (worker === null)
-        res.status(404).json({ message: "Worker is not found" });
-      else
-        res.json({ message: "Seccussfully deleted worker." });
-    })
+    WorkerQuery
+      .findOneAndUpdate(
+        { _id: new Types.ObjectId(workerId), isWorkerActive: true },
+        { isWorkerActive: false }
+      )
+      .then((worker: IWorkerQuery) => {
+        if (worker === null)
+          res.status(404).json({ message: "Worker is not found" });
+        else
+          res.json({ message: "Seccussfully deleted worker." });
+      })
+      .catch(next);
 }
 
 export {

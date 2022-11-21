@@ -2,17 +2,17 @@ import { Schema, model, Document } from 'mongoose';
 
 export interface IShiftQuery extends Document {
   _id: Schema.Types.ObjectId,
-  start_hour: Number,
-  end_hour: Number,
+  startHour: Number,
+  endHour: Number,
   isShiftActive: boolean,
 }
 
 const ShiftSchema: Schema = new Schema({
-  start_hour: {
+  startHour: {
     type: Number,
     required: true,
   },
-  end_hour: {
+  endHour: {
     type: Number,
     required: true,
   },

@@ -1,10 +1,12 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, PopulatedDoc } from 'mongoose';
+import { IWorkerQuery } from "./worker";
+import { IShiftQuery } from "./shift";
 
 export interface IPlanQuery extends Document {
   _id: Schema.Types.ObjectId,
   date: Date,
-  work_id: Schema.Types.ObjectId,
-  shift_id: Schema.Types.ObjectId,
+  worker: PopulatedDoc<Document<Schema.Types.ObjectId> & IWorkerQuery>,
+  shift: PopulatedDoc<Document<Schema.Types.ObjectId> & IShiftQuery>,
 }
 
 const PlanSchema: Schema = new Schema({
@@ -12,13 +14,13 @@ const PlanSchema: Schema = new Schema({
     type: Date,
     required: true,
   },
-  work_id: {
+  worker: {
     type: Schema.Types.ObjectId,
     ref: "workers"
   },
-  shift_id: {
+  shift: {
     type: Schema.Types.ObjectId,
-    ref: "workers"
+    ref: "shifts"
   },
 });
 

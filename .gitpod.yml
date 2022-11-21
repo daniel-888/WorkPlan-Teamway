@@ -7,9 +7,9 @@ tasks:
       ./start-mongodb.sh latest "" 27019 workplan Mike teamway
       yarn
 
-ports:
-  # response of root request will be appeared in the browser
-  - port: 3000
-    name: root response
-    onOpen: open-browser
-    visibility: public
+# ports:
+#   # response of root request will be appeared in the browser
+#   - port: 3000
+#     name: root response
+#     onOpen: open-browser
+#     visibility: public

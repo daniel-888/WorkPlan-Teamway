@@ -22,7 +22,9 @@
     "/v1/worker": {
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Worker"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -81,7 +83,10 @@
           },
           "description": ""
         },
-        "description": "Create a worker"
+        "description": "Create a worker",
+        "tags": [
+          "Worker"
+        ]
       },
       "delete": {
         "summary": "",
@@ -91,7 +96,10 @@
             "description": "Successfully deleted all workers."
           }
         },
-        "description": "make a worker inactive"
+        "description": "make a worker inactive",
+        "tags": [
+          "Worker"
+        ]
       }
     },
     "/v1/worker/{workerId}": {
@@ -108,7 +116,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint to worker",
-        "tags": [],
+        "tags": [
+          "Worker"
+        ],
         "responses": {
           "200": {
             "description": "Worker found",
@@ -169,7 +179,10 @@
             }
           }
         },
-        "description": "Update worker data"
+        "description": "Update worker data",
+        "tags": [
+          "Worker"
+        ]
       },
       "delete": {
         "summary": "",
@@ -182,13 +195,44 @@
             "description": "Worker Not Found"
           }
         },
-        "description": "Make worker inactive"
+        "description": "Make worker inactive",
+        "tags": [
+          "Worker"
+        ]
       }
+    },
+    "/v1/worker/inactive": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [
+          "Worker"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Worker"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-v1-worker-is",
+        "description": "Get inactive workers"
+      },
+      "parameters": []
     },
     "/v1/shift": {
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Shift"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -239,7 +283,10 @@
             }
           }
         },
-        "description": "Create a shift"
+        "description": "Create a shift",
+        "tags": [
+          "Shift"
+        ]
       },
       "delete": {
         "summary": "",
@@ -249,7 +296,10 @@
             "description": "All deleted"
           }
         },
-        "description": "Make a shift inactive"
+        "description": "Make a shift inactive",
+        "tags": [
+          "Shift"
+        ]
       }
     },
     "/v1/shift/{shiftId}": {
@@ -266,7 +316,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Shift"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -334,7 +386,10 @@
             }
           }
         },
-        "description": "Update shift data"
+        "description": "Update shift data",
+        "tags": [
+          "Shift"
+        ]
       },
       "delete": {
         "summary": "",
@@ -344,13 +399,43 @@
             "description": "shift deleted"
           }
         },
-        "description": "Make shift inactive"
+        "description": "Make shift inactive",
+        "tags": [
+          "Shift"
+        ]
+      }
+    },
+    "/v1/shift/inactive": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [
+          "Shift"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Shift"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-v1-shift-inactive",
+        "description": "Get inactive shifts."
       }
     },
     "/v1/plan": {
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Plan"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -417,7 +502,10 @@
             }
           }
         },
-        "description": "Create a new plan"
+        "description": "Create a new plan",
+        "tags": [
+          "Plan"
+        ]
       },
       "delete": {
         "summary": "",
@@ -427,7 +515,10 @@
             "description": "All plans deleted"
           }
         },
-        "description": "Delete a plan"
+        "description": "Delete a plan",
+        "tags": [
+          "Plan"
+        ]
       },
       "parameters": [],
       "put": {
@@ -469,7 +560,10 @@
             }
           }
         },
-        "description": "Replace a plan"
+        "description": "Replace a plan",
+        "tags": [
+          "Plan"
+        ]
       }
     },
     "/v1/plan/{planId}": {
@@ -486,7 +580,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Plan"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -513,7 +609,10 @@
             "description": "Plan deleted"
           }
         },
-        "description": "Delete plan of plan Id"
+        "description": "Delete plan of plan Id",
+        "tags": [
+          "Plan"
+        ]
       }
     },
     "/v1/plan/worker/{workerId}": {
@@ -530,7 +629,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Plan"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -565,7 +666,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Plan"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -599,7 +702,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Plan"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -633,7 +738,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Plan"
+        ],
         "operationId": "get-v1-plan-isActive",
         "responses": {
           "200": {

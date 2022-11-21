@@ -16,7 +16,7 @@ router.get('/', workersList);
 router.post("/", createWorker);
 router.delete("/", deleteAllWorkers);
 
-router.get("/inActive", getInactiveWorkers);
+router.get("/inactive", getInactiveWorkers);
 
 router.get("/:workerId", getWorker);
 router.patch("/:workerId", updateWorker);
