@@ -11,3 +11,14 @@ This repo is developed in gitpod environment (which I prefer).
 ## Test
     yarn test
 ## Swagger-UI endpoint : `/api-docs`
+Do some test with this interface.
+## Explanation
+There are three data models in here : `workers, shifts, plans`
+
+API structure can be found in openAPI swagger manifest.
+
+Simple CRUD and a few more query apis are implemented.
+
+When a worker or shift is deleted then their flag will set to false.
+
+The plan will only return for the active workers. Inactive workers' shifts will be inactive.
