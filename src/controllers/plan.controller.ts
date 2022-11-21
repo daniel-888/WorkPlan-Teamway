@@ -60,16 +60,16 @@ const createPlan = (req: Request, res: Response, next: NextFunction) => {
     ShiftQuery
       .findOne({ _id: shiftId, isShiftActive: true })
       .then((shift: IShiftQuery) => {
-        if (shift === null) res.status(404).json("Shift does not exist.");
+        if (shift === null) return res.status(404).json("Shift does not exist.");
         WorkerQuery
           .findOne({ _id: workerId, isWorkerActive: true })
           .then((worker: IWorkerQuery) => {
-            if (worker === null) res.status(404).json({ message: "Worker does not exist." });
+            if (worker === null) return res.status(404).json({ message: "Worker does not exist." });
             PlanQuery
               .findOne({ date: new Date(date), worker: workerId, shift: { $ne: shiftId } })
               .then((plan: IPlanQuery) => {
                 if (plan !== null)
-                  res.status(409).json({ message: "Worker already has a shift that day." });
+                  return res.status(409).json({ message: "Worker already has a shift that day." });
                 PlanQuery
                   .findOne({ date: new Date(date), shift: shiftId })
                   .then((plan: IPlanQuery) => {
@@ -145,20 +145,20 @@ const replacePlan = (req: Request, res: Response, next: NextFunction) => {
     ShiftQuery
       .findOne({ _id: shiftId, isShiftActive: true })
       .then((shift: IShiftQuery) => {
-        if (shift === null) res.status(404).json("Shift does not exist.");
+        if (shift === null) return res.status(404).json("Shift does not exist.");
         WorkerQuery
           .findOne({ _id: workerId, isWorkerActive: true })
           .then((worker: IWorkerQuery) => {
-            if (worker === null) res.status(404).json({ message: "Worker does not exist." });
+            if (worker === null) return res.status(404).json({ message: "Worker does not exist." });
             PlanQuery
               .findOne({ date: new Date(date), worker: workerId, shift: { $ne: shiftId } })
               .then((plan: IPlanQuery) => {
                 if (plan !== null)
-                  res.status(409).json({ message: "Worker already has a shift that day." });
+                  return res.status(409).json({ message: "Worker already has a shift that day." });
                 PlanQuery
                   .findOne({ date: new Date(date), shift: shiftId, worker: workerId })
                   .then((plan: IPlanQuery) => {
-                    if (plan !== null) res.status(409).json({ message: "Worker alreadt has the shift that day." });
+                    if (plan !== null) return res.status(409).json({ message: "Worker alreadt has the shift that day." });
                     PlanQuery
                       .findOneAndUpdate({ date: new Date(date), shift: shiftId }, { worker: workerId })
                       .then((plan: IPlanQuery) => {
@@ -281,7 +281,7 @@ const deleteAllPlans = (req: Request, res: Response, next: NextFunction) => {
 
 const getPlan = (req: Request, res: Response, next: NextFunction) => {
   let { planId } = req.params;
-  if (!Types.ObjectId.isValid(planId)) res.status(404).json({ message: "Plan id is not valid." });
+  if (!Types.ObjectId.isValid(planId)) return res.status(404).json({ message: "Plan id is not valid." });
   PlanQuery
     .findById(new Types.ObjectId(planId))
     .populate({
@@ -325,7 +325,7 @@ const getPlan = (req: Request, res: Response, next: NextFunction) => {
 
 const deletePlan = (req: Request, res: Response, next: NextFunction) => {
   let { planId } = req.params;
-  if (!Types.ObjectId.isValid(planId)) res.status(404).json({ message: "Plan id is not valid." });
+  if (!Types.ObjectId.isValid(planId)) return res.status(404).json({ message: "Plan id is not valid." });
   PlanQuery
     .deleteOne({ _id: planId })
     .then(() => {
