@@ -5,11 +5,18 @@ tasks:
   - init: |
       chmod +x ./start-mongodb.sh
       ./start-mongodb.sh latest "" 27019 workplan Mike teamway
-      yarn
+      yarn install
+      yarn test
 
-# ports:
-#   # response of root request will be appeared in the browser
-#   - port: 3000
-#     name: root response
-#     onOpen: open-browser
-#     visibility: public
+  - command: |
+      cp .env.docker .env
+      docker-compose up -d --build
+
+    openMode: split-right
+
+ports:
+  # response of root request will be appeared in the browser
+  - port: 3000
+    name: root response
+    onOpen: open-browser
+    visibility: public
