@@ -18,6 +18,7 @@ const customCss = fs.readFileSync(
 );
 
 setEnviornment();
+// connect mongodb
 initDB();
 
 const app: Express = express();
@@ -39,13 +40,16 @@ app.use(
 
 
 app.use(morgan("dev"));
+
 initRoute(app);
+
 app.set("trust proxy", true);
 const server = app.listen(process.env.PORT || 3000, () => {
   // tslint:disable-next-line:no-console
   console.log("Server is Runing On port 3000");
 });
 
+// graceful shutdown handler
 process.on("SIGTERM", () => {
   console.info("SIGTERM signal received.");
   console.log("Closing https server.");
