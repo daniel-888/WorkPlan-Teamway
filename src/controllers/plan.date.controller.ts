@@ -5,6 +5,27 @@ import WorkerQuery, { IWorkerQuery } from "../models/worker";
 import { Types } from "mongoose";
 import { formatDate } from "../utils/date";
 
+/**
+ * Get the list of plans in a given day 
+ * URL: /v1/plan/date/:date
+ * METHOD: GET
+ * REQUEST: {}
+ * REPONSE: Array (
+ *  {
+ *    id: string,
+ *    date: string,
+ *    shiftId: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    workerId: string,
+ *    firstName: string,
+ *    lastName: string,
+ *    email: string,
+ *    isWorkerActive: boolean,
+ *    isShiftActive: boolean,
+ *  }
+ * )
+ */
 const getPlanDate = (req: Request, res: Response, next: NextFunction) => {
   let { date } = req.params;
   if (Number.isNaN(Date.parse(date))) res.status(404).json({ message: "Date is not valid." });

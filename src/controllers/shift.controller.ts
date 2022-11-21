@@ -2,6 +2,20 @@ import { Request, Response, NextFunction } from "express";
 import ShiftQuery, { IShiftQuery } from "../models/shift";
 import { Types } from "mongoose";
 
+/**
+ * Get the whole list of active shifts 
+ * URL: /v1/shift
+ * METHOD: GET
+ * REQUEST: {}
+ * REPONSE: Array (
+ *  {
+ *    id: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    isShiftActive: boolean
+ *  }
+ * )
+ */
 const shiftsList = (req: Request, res: Response, next: NextFunction) => {
   ShiftQuery
     .find({ isShiftActive: true })
@@ -18,6 +32,20 @@ const shiftsList = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
+/**
+ * Get the whole list of inactive shifts 
+ * URL: /v1/shift/inactive
+ * METHOD: GET
+ * REQUEST: {}
+ * REPONSE: Array (
+ *  {
+ *    id: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    isShiftActive: boolean
+ *  }
+ * )
+ */
 const getInactiveShifts = (req: Request, res: Response, next: NextFunction) => {
   ShiftQuery
     .find({ isShiftActive: false })
@@ -34,6 +62,18 @@ const getInactiveShifts = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 }
 
+/**
+ * Get the shift by id 
+ * URL: /v1/shift/:shiftId
+ * METHOD: GET
+ * REQUEST: {}
+ * REPONSE: {
+ *    id: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    isShiftActive: boolean
+ * }
+ */
 const getShift = (req: Request, res: Response, next: NextFunction) => {
   let { shiftId } = req.params;
   if (!Types.ObjectId.isValid(shiftId))
@@ -55,6 +95,18 @@ const getShift = (req: Request, res: Response, next: NextFunction) => {
       .catch(next);
 };
 
+/**
+ * Create a shift
+ * URL: /v1/shift/:shiftId
+ * METHOD: POST
+ * REQUEST: { startHour: number, endHour: number }
+ * REPONSE: {
+ *    id: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    isShiftActive: boolean
+ * }
+ */
 const createShift = (req: Request, res: Response, next: NextFunction) => {
   let { startHour, endHour } = req.body;
   ShiftQuery
@@ -77,6 +129,18 @@ const createShift = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
+/**
+ * Update a shift
+ * URL: /v1/shift/:shiftId
+ * METHOD: PATCH
+ * REQUEST: { startHour: number, endHour: number }
+ * REPONSE: {
+ *    id: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    isShiftActive: boolean
+ * }
+ */
 const updateShift = (req: Request, res: Response, next: NextFunction) => {
   let { shiftId } = req.params;
   let { startHour, endHour } = req.body;
@@ -99,6 +163,13 @@ const updateShift = (req: Request, res: Response, next: NextFunction) => {
       .catch(next);
 };
 
+/**
+ * Delete all shifts
+ * URL: /v1/shift
+ * METHOD: DELETE
+ * REQUEST: {}
+ * REPONSE: {{message: "Successfully deleted all shifts."}}
+ */
 const deleteAllShifts = (req: Request, res: Response, next: NextFunction) => {
   ShiftQuery
     .updateMany({ isShiftActive: true }, { isShiftActive: false })
@@ -108,6 +179,13 @@ const deleteAllShifts = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
+/**
+ * Delete a shift by id
+ * URL: /v1/shift/:shiftId
+ * METHOD: DELETE
+ * REQUEST: {}
+ * REPONSE: {{message: "Successfully deleted."}}
+ */
 const deleteShift = (req: Request, res: Response, next: NextFunction) => {
   let { shiftId } = req.params;
   if (!Types.ObjectId.isValid(shiftId))

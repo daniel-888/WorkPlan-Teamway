@@ -5,6 +5,27 @@ import WorkerQuery, { IWorkerQuery } from "../models/worker";
 import { Types } from "mongoose";
 import { formatDate } from "../utils/date";
 
+/**
+ * Get the whole list of plans for a specific shift 
+ * URL: /v1/plan/shift/:shiftId
+ * METHOD: GET
+ * REQUEST: {}
+ * REPONSE: Array (
+ *  {
+ *    id: string,
+ *    date: string,
+ *    shiftId: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    workerId: string,
+ *    firstName: string,
+ *    lastName: string,
+ *    email: string,
+ *    isWorkerActive: boolean,
+ *    isShiftActive: boolean,
+ *  }
+ * )
+ */
 const getPlanShift = (req: Request, res: Response, next: NextFunction) => {
   let { shiftId } = req.params;
   if (!Types.ObjectId.isValid(shiftId)) res.status(404).json({ message: "Shift id is not valid." });

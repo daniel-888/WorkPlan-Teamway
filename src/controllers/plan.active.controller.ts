@@ -5,6 +5,27 @@ import WorkerQuery, { IWorkerQuery } from "../models/worker";
 import { Types } from "mongoose";
 import { formatDate } from "../utils/date";
 
+/**
+ * Get the whole list of active or inactive plans 
+ * URL: /v1/plan/active/:isWorkerActive
+ * METHOD: GET
+ * REQUEST: {}
+ * REPONSE: Array (
+ *  {
+ *    id: string,
+ *    date: string,
+ *    shiftId: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    workerId: string,
+ *    firstName: string,
+ *    lastName: string,
+ *    email: string,
+ *    isWorkerActive: boolean,
+ *    isShiftActive: boolean,
+ *  }
+ * )
+ */
 const getPlanActive = (req: Request, res: Response, next: NextFunction) => {
   let { isWorkerActive } = req.params;
   if (isWorkerActive !== "true" && isWorkerActive !== "false") res.status(404).json({ message: "Date is not valid." });

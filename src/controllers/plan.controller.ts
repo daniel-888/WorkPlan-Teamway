@@ -5,6 +5,27 @@ import WorkerQuery, { IWorkerQuery } from "../models/worker";
 import { Types } from "mongoose";
 import { formatDate } from "../utils/date";
 
+/**
+ * Get the whole list of active plans 
+ * URL: /v1/plan
+ * METHOD: GET
+ * REQUEST: {}
+ * REPONSE: Array (
+ *  {
+ *    id: string,
+ *    date: string,
+ *    shiftId: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    workerId: string,
+ *    firstName: string,
+ *    lastName: string,
+ *    email: string,
+ *    isWorkerActive: boolean,
+ *    isShiftActive: boolean,
+ *  }
+ * )
+ */
 const plansList = (req: Request, res: Response, next: NextFunction) => {
   PlanQuery.find()
     .populate({
@@ -50,6 +71,25 @@ const plansList = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
+/**
+ * Create a new plan, worker cannot have more than 1 shift a day 
+ * URL: /v1/plan
+ * METHOD: POST
+ * REQUEST: {date, workerId, shiftId}
+ * REPONSE: {
+ *    id: string,
+ *    date: string,
+ *    shiftId: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    workerId: string,
+ *    firstName: string,
+ *    lastName: string,
+ *    email: string,
+ *    isWorkerActive: boolean,
+ *    isShiftActive: boolean,
+ * }
+ */
 const createPlan = (req: Request, res: Response, next: NextFunction) => {
   let { date, workerId, shiftId } = req.body;
   if (!Types.ObjectId.isValid(workerId))
@@ -131,10 +171,28 @@ const createPlan = (req: Request, res: Response, next: NextFunction) => {
           .catch(next);
       })
       .catch(next);
-
   }
 }
 
+/**
+ * Replace an existing plan to a new plan, worker cannot have more than 1 shift a day 
+ * URL: /v1/plan
+ * METHOD: PUT
+ * REQUEST: {date, workerId, shiftId}
+ * REPONSE: {
+ *    id: string,
+ *    date: string,
+ *    shiftId: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    workerId: string,
+ *    firstName: string,
+ *    lastName: string,
+ *    email: string,
+ *    isWorkerActive: boolean,
+ *    isShiftActive: boolean,
+ * }
+ */
 const replacePlan = (req: Request, res: Response, next: NextFunction) => {
   let { date, workerId, shiftId } = req.body;
   if (!Types.ObjectId.isValid(workerId))
@@ -270,6 +328,13 @@ const replacePlan = (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+/**
+ * Delete all plans
+ * URL: /v1/plan
+ * METHOD: DELETE
+ * REQUEST: {}
+ * REPONSE: {{message: "Successfully deleted all plans."}}
+ */
 const deleteAllPlans = (req: Request, res: Response, next: NextFunction) => {
   PlanQuery
     .remove()
@@ -279,6 +344,25 @@ const deleteAllPlans = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 }
 
+/**
+ * Get plan by id
+ * URL: /v1/plan/:planId
+ * METHOD: GET
+ * REQUEST: {}
+ * REPONSE: {
+ *    id: string,
+ *    date: string,
+ *    shiftId: string,
+ *    startHour: number,
+ *    endHour: number,
+ *    workerId: string,
+ *    firstName: string,
+ *    lastName: string,
+ *    email: string,
+ *    isWorkerActive: boolean,
+ *    isShiftActive: boolean,
+ * }
+ */
 const getPlan = (req: Request, res: Response, next: NextFunction) => {
   let { planId } = req.params;
   if (!Types.ObjectId.isValid(planId)) return res.status(404).json({ message: "Plan id is not valid." });
@@ -323,6 +407,13 @@ const getPlan = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 }
 
+/**
+ * Delete a plan by id
+ * URL: /v1/plan/:planId
+ * METHOD: DELETE
+ * REQUEST: {}
+ * REPONSE: {{message: "Successfully deleted."}}
+ */
 const deletePlan = (req: Request, res: Response, next: NextFunction) => {
   let { planId } = req.params;
   if (!Types.ObjectId.isValid(planId)) return res.status(404).json({ message: "Plan id is not valid." });
