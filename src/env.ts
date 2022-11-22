@@ -11,7 +11,7 @@ enum EnvConstants {
 }
 
 enum EvnFiles {
-  LOCAL = ".env",
+  LOCAL = ".env.local",
   PRODUCTION = ".env.prod",
   DEV = ".env.dev",
   TEST = ".env.test",

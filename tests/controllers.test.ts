@@ -128,7 +128,7 @@ describe("controllers test", () => {
           .expect(200)
           .end((err, res) => {
             expect(res.body.length).to.be.equal(6);
-            console.log("workerData", res.body);
+            console.log("==================== workerData =====================\n", res.body);
             workerData = res.body;
             resolve();
           });
@@ -179,7 +179,7 @@ describe("controllers test", () => {
           .expect(200)
           .end((err, res) => {
             expect(res.body.length).to.be.equal(3);
-            console.log("shiftData = ", res.body);
+            console.log("================ shiftData ==================\n", res.body);
             shiftData = res.body;
             resolve();
           });
@@ -191,9 +191,9 @@ describe("controllers test", () => {
       return new Promise(async (resolve) => {
         for (let i = 0; i < mockDates.length; i++) {
           let date = mockDates[i];
-          console.log(i);
+          // console.log(i);
           for (let j = 1; j <= shiftData.length; j++) {
-            console.log(j);
+            // console.log(j);
             let shift = shiftData[j - 1];
             let worker = workerData[getRandomInt(workerData.length)];
             await new Promise<void>((resolve) => {
@@ -208,8 +208,11 @@ describe("controllers test", () => {
                 .expect("Content-Type", /json/)
                 .expect(200)
                 .end((err, res) => {
-                  console.log("res.status = ", res.status);
-                  if (res.status !== 200) j--;
+                  // console.log("res.status = ", res.status);
+                  if (res.status !== 200) {
+                    j--;
+                    console.log("Fail reason: ", res.status, res.body.message);
+                  }
                   resolve();
                 });
             });
@@ -218,7 +221,7 @@ describe("controllers test", () => {
         resolve();
       });
     });
-    it("GET /v1/plan",async () => {
+    it("GET /v1/plan", async () => {
       return new Promise((resolve) => {
         request(app)
           .get("/v1/plan")
@@ -226,11 +229,26 @@ describe("controllers test", () => {
           .expect(200)
           .end((err, res) => {
             expect(res.body.length).to.be.equal(21);
-            console.log("planData = ", res.body);
+            // console.log("================= planData ==============\n", res.body);
             planData = res.body;
             resolve();
           });
       });
     });
+    it("GET /v1/plan/date/:date no workers have two shifts on the same day", async () => {
+      return new Promise((resolve) => {
+        request(app)
+          .get("/v1/plan/date/2022-11-23")
+          .expect(200)
+          .end((err, res) => {
+            expect(res.body.length).to.be.equal(3);
+            expect(res.body[0].workerId).not.equal(res.body[1].workerId);
+            expect(res.body[1].workerId).not.equal(res.body[2].workerId);
+            expect(res.body[2].workerId).not.equal(res.body[0].workerId);
+            console.log("============= Plans on 2022/11/23 =============\n", res.body);
+            resolve();
+          })
+      })
+    })
   });
 });
