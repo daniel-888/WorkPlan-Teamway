@@ -1,0 +1,637 @@
+openapi: 3.0.0
+x-stoplight:
+  id: ntvsto7nxhdrg
+info:
+  title: workplan
+  version: '1.0'
+  description: Worker, Shift, Plan CRUD
+  contact:
+    name: mike-daniel-888
+    email: mikecryptodev05615@gmail.com
+    url: https://stoplight.io/studio
+  license:
+    name: MIT
+    url: https://spotlight.io/studio
+servers: []
+paths:
+  /v1/worker:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Worker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Worker'
+      operationId: get-v1-worker
+      description: Get all the workers.
+    post:
+      summary: ''
+      operationId: post-v1-worker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Worker'
+        '409':
+          description: Worker email already taken.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+        description: ''
+      description: Create a worker
+      tags:
+        - Worker
+    delete:
+      summary: ''
+      operationId: delete-v1-worker
+      responses:
+        '200':
+          description: Successfully deleted all workers.
+      description: make a worker inactive
+      tags:
+        - Worker
+  /v1/worker/{workerId}:
+    parameters:
+      - schema:
+          type: string
+        name: workerId
+        in: path
+        required: true
+        description: worker ID
+    get:
+      summary: Your GET endpoint to worker
+      tags:
+        - Worker
+      responses:
+        '200':
+          description: Worker found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Worker'
+        '404':
+          description: Worker Not Found
+        '409':
+          description: Email already taken
+      operationId: get-v1-woker-workerId
+      description: Get the worker of worker ID
+    patch:
+      summary: ''
+      operationId: patch-v1-woker-workerId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Worker'
+        '404':
+          description: Worker Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+      description: Update worker data
+      tags:
+        - Worker
+    delete:
+      summary: ''
+      operationId: delete-v1-woker-workerId
+      responses:
+        '200':
+          description: Successfully deleted.
+        '404':
+          description: Worker Not Found
+      description: Make worker inactive
+      tags:
+        - Worker
+  /v1/worker/inactive:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Worker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Worker'
+      operationId: get-v1-worker-is
+      description: Get inactive workers
+    parameters: []
+  /v1/shift:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shift'
+      operationId: get-v1-shift
+      description: Get all shifts
+    post:
+      summary: ''
+      operationId: post-v1-shift
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shift'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startHour:
+                  type: string
+                endHour:
+                  type: string
+      description: Create a shift
+      tags:
+        - Shift
+    delete:
+      summary: ''
+      operationId: delete-v1-shift
+      responses:
+        '200':
+          description: All deleted
+      description: Make a shift inactive
+      tags:
+        - Shift
+  /v1/shift/{shiftId}:
+    parameters:
+      - schema:
+          type: string
+        name: shiftId
+        in: path
+        required: true
+        description: Shift ID
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shift'
+        '404':
+          description: Shift Not Found
+      operationId: get-v1-shift-shiftId
+      description: Get the Shift of shift ID
+    patch:
+      summary: ''
+      operationId: patch-v1-shift-shiftId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shift'
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+        '404':
+          description: Shift Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startHour:
+                  type: integer
+                  format: int32
+                  minimum: 0
+                  maximum: 24
+                  default: 0
+                endHour:
+                  type: integer
+                  format: int32
+                  minimum: 0
+                  maximum: 24
+                  default: 8
+      description: Update shift data
+      tags:
+        - Shift
+    delete:
+      summary: ''
+      operationId: delete-v1-shift-shiftId
+      responses:
+        '200':
+          description: shift deleted
+      description: Make shift inactive
+      tags:
+        - Shift
+  /v1/shift/inactive:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Shift
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shift'
+      operationId: get-v1-shift-inactive
+      description: Get inactive shifts.
+  /v1/plan:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Plan
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+      operationId: get-v1-plan
+      description: Get all plans
+    post:
+      summary: ''
+      operationId: post-v1-plan
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
+        '403':
+          description: Worker already has a shift this day.
+        '404':
+          description: Worker or Shift Not Found
+        '409':
+          description: Plan already taken
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                shiftId:
+                  type: string
+                workerId:
+                  type: string
+      description: Create a new plan
+      tags:
+        - Plan
+    delete:
+      summary: ''
+      operationId: delete-v1-plan
+      responses:
+        '200':
+          description: All plans deleted
+      description: Delete a plan
+      tags:
+        - Plan
+    parameters: []
+    put:
+      summary: ''
+      operationId: put-v1-plan
+      responses:
+        '200':
+          description: Plan created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
+        '409':
+          description: Worker already has a plan that day
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                workerId:
+                  type: string
+                shiftId:
+                  type: string
+      description: Replace a plan
+      tags:
+        - Plan
+  /v1/plan/{planId}:
+    parameters:
+      - schema:
+          type: string
+        name: planId
+        in: path
+        required: true
+        description: Plan ID
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Plan
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
+        '404':
+          description: Plan Not Found
+      operationId: get-v1-plan-planId
+      description: Get the plan of plan id
+    delete:
+      summary: ''
+      operationId: delete-v1-plan-planId
+      responses:
+        '200':
+          description: Plan deleted
+      description: Delete plan of plan Id
+      tags:
+        - Plan
+  /v1/plan/worker/{workerId}:
+    parameters:
+      - schema:
+          type: string
+        name: workerId
+        in: path
+        required: true
+        description: Worker ID
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Plan
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+      operationId: get-v1-plan-workerId
+      description: Get the plans of a worker
+  /v1/plan/date/{date}:
+    parameters:
+      - schema:
+          type: string
+          format: date
+        name: date
+        in: path
+        required: true
+        description: Date
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Plan
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+      operationId: get-v1-plan-date
+      description: Get the plans of a data
+  /v1/plan/shift/{shiftId}:
+    parameters:
+      - schema:
+          type: string
+        name: shiftId
+        in: path
+        required: true
+        description: Shift ID
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Plan
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+      operationId: get-v1-plan-shiftId
+      description: Get the plans of a shift
+  /v1/plan/active/{isWorkerActive}:
+    parameters:
+      - schema:
+          type: boolean
+        name: isWorkerActive
+        in: path
+        required: true
+        description: Is worker currently active
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Plan
+      operationId: get-v1-plan-isActive
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+      description: Get the plans of inactive or active
+components:
+  schemas:
+    Worker:
+      title: Worker
+      type: object
+      x-stoplight:
+        id: 27f70ade1e1dc
+      x-examples:
+        Example 1:
+          id: 142
+          firstName: Alice
+          lastName: Smith
+          email: alice.smith@gmail.com
+          createDate: '1997-10-31'
+          isWorkerActive: true
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the given user.
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        createDate:
+          type: string
+          format: date
+          description: The date that the user was created.
+        isWorkerActive:
+          type: boolean
+          description: False if the user is not currently available to work.
+          default: true
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - createDate
+        - isWorkerActive
+    Shift:
+      title: Shift
+      x-stoplight:
+        id: cm29g9inxug4k
+      type: object
+      properties:
+        id:
+          type: string
+        startHour:
+          type: integer
+          format: int32
+          maximum: 24
+          minimum: 0
+          default: 0
+        endHour:
+          type: integer
+          format: int32
+          maximum: 24
+          minimum: 0
+          default: 8
+        isShiftActive:
+          type: boolean
+          description: Fasle if this shift is deleted
+          default: true
+      required:
+        - id
+        - startHour
+        - endHour
+        - isShiftActive
+      x-examples:
+        Example 1:
+          id: string
+          startHour: 0
+          endHour: 8
+          isShiftActive: true
+    Plan:
+      title: Plan
+      x-stoplight:
+        id: umicdp4onp327
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date
+          example: '1998-01-03'
+        shiftId:
+          type: string
+        startHour:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          maximum: 24
+        'endHour ':
+          type: integer
+          format: int32
+          default: 8
+          minimum: 0
+          maximum: 24
+        workerId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        isWorkerActive:
+          type: boolean
+        isShiftActive:
+          type: boolean
+      required:
+        - id
+        - date
+        - shiftId
+        - startHour
+        - 'endHour '
+        - workerId
+        - firstName
+        - lastName
+        - email
+        - isWorkerActive
+        - isShiftActive
+      x-examples:
+        Example 1:
+          id: string
+          date: '1998-01-03'
+          shiftId: string
+          startHour: 0
+          'endHour ': 8
+          workerId: string
+          firstName: string
+          lastName: string
+          email: user@example.com
+          isWorkerActive: true
+          isShiftActive: true
